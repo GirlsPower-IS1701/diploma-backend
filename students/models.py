@@ -48,6 +48,7 @@ class Students(models.Model):
     study_status = models.ForeignKey(Study_Statuses, on_delete=models.CASCADE, verbose_name="study_statuses")
     study_form = models.ForeignKey(Study_Form, on_delete=models.CASCADE, verbose_name="study_form")
     payment_form = models.ForeignKey(Payment_Form, on_delete=models.CASCADE, verbose_name="payment_form")
+    degree_type = models.ForeignKey(Degree_Types, on_delete=models.CASCADE, verbose_name="degree_type", null=True)
     course = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted = models.BooleanField(default=False)
@@ -55,6 +56,18 @@ class Students(models.Model):
     class Meta:
         verbose_name = 'Student'
         verbose_name_plural = 'Students'
+
+
+class StudentProfile(models.Model):
+    student = models.OneToOneField(Students, blank=False, on_delete=models.CASCADE, related_name="student_avatar", null=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, default='avatars/default.png')
+    created_at = models.DateTimeField(auto_now_add=True)
+    deleted = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Student_Profile'
+        verbose_name_plural = 'Students_Profile'
+
 
 
 

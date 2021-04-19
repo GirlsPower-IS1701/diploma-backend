@@ -5,6 +5,7 @@ from staff.models import Staff
 from students.models import Students
 
 
+
 class Adviser(models.Model):
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE, verbose_name="staff")
     created_at = models.DateTimeField(auto_now_add=True)

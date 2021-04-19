@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from accounts.serializers import UserSerializer
-from .models import Payment_Form, Degree_Types, Study_Form, Study_Statuses, Students
+from .models import Payment_Form, Degree_Types, Study_Form, Study_Statuses, Students, StudentProfile
 
 
 class PaymentFormSerialaizer(serializers.ModelSerializer):
@@ -35,3 +35,11 @@ class StudentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Students
         fields = ('id', 'user', 'study_status', 'study_form', 'payment_form', 'course')
+
+
+class StudentProfileSerializer(serializers.ModelSerializer):
+    student = StudentsSerializer(read_only=True)
+
+    class Meta:
+        model = StudentProfile
+        fields = ('id', 'student', 'avatar')

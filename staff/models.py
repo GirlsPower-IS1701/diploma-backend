@@ -55,4 +55,15 @@ class Staff(models.Model):
         verbose_name = 'Staff'
         verbose_name_plural = 'Staff'
 
+class StaffProfile(models.Model):
+    staff = models.OneToOneField(Staff, blank=False, on_delete=models.CASCADE, related_name="staff_avatar", null=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, default='avatars/default.png')
+    created_at = models.DateTimeField(auto_now_add=True)
+    deleted = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Staff_Profile'
+        verbose_name_plural = 'Staff_Profile'
+
+
 
