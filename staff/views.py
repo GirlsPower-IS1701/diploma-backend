@@ -4,8 +4,9 @@ from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.contrib.auth.models import Group
 from accounts.models import User
+from accounts.utils import is_staff
 from staff.models import Staff, Academic_Degree, Academic_Rank, Positions, StaffProfile
 from staff.serializers import StaffSerializer, StaffProfileSerializer
 
@@ -29,6 +30,11 @@ class StaffApi(generics.GenericAPIView):
                 position = Positions.objects.get(pk=request.POST["position_id"])
             )
             staff.save()
+
+            user = User.objects.get(pk=request.POST["user_id"])
+            group = Group.objects.get(name='Staff')
+            group.user_set.add(user)
+
             response_serializer = self.serializer_class(staff)
             return Response(response_serializer.data)
         else:
@@ -67,13 +73,16 @@ class StaffProfileApi(generics.GenericAPIView):
 # @csrf_exempt
 def get_staff_profile(request):
     user = request.user
-    staff = Staff.objects.get(user=user)
-    staff_profile = StaffProfile.objects.get(staff=staff)
-    staff_serializer = StaffSerializer(staff)
-    profile_serializer = StaffProfileSerializer(staff_profile)
-    if profile_serializer.data['avatar']:
-        return Response({"staff": staff_serializer.data, "avatar": profile_serializer.data['avatar']})
+    if is_staff(user):
+        staff = Staff.objects.get(user=user)
+        staff_profile = StaffProfile.objects.get(staff=staff)
+        staff_serializer = StaffSerializer(staff)
+        profile_serializer = StaffProfileSerializer(staff_profile)
+        if profile_serializer.data['avatar']:
+            return Response({"staff": staff_serializer.data, "avatar": profile_serializer.data['avatar']})
+        else:
+            return Response({"staff": staff_serializer.data, "avatar": None})
     else:
-        return Response({"staff": staff_serializer.data, "avatar": None})
+        return Response({"You don't have permissions for this action"})
 
 

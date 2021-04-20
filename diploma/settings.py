@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     'speciality_groups',
     'chat',
     'timetable',
-
     'calendare',
 
 ]

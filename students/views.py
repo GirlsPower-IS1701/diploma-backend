@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from accounts.models import User
+from accounts.utils import is_student
 from students.models import Students, Study_Statuses, Study_Form, Payment_Form, Degree_Types, StudentProfile
 from students.serializers import StudentsSerializer, StudentProfileSerializer
 from django.contrib.auth.models import Group
@@ -32,6 +33,11 @@ class StudentApi(generics.GenericAPIView):
                 course=serializer.validated_data.get("course")
             )
             student.save()
+
+            user = User.objects.get(pk=request.POST["user_id"])
+            group = Group.objects.get(name='Student')
+            group.user_set.add(user)
+
             response_serializer = self.serializer_class(student)
             return Response(response_serializer.data)
         else:
@@ -67,14 +73,16 @@ class StudentProfileApi(generics.GenericAPIView):
 
 @api_view(('GET',))
 @permission_classes([IsAuthenticated, ])
-# @csrf_exempt
 def get_student_profile(request):
     user = request.user
-    student = Students.objects.get(user=user)
-    student_profile = StudentProfile.objects.get(student=student)
-    student_serializer = StudentsSerializer(student)
-    profile_serializer = StudentProfileSerializer(student_profile)
-    if profile_serializer.data['avatar']:
-        return Response({"staff": student_serializer.data, "avatar": profile_serializer.data['avatar']})
+    if is_student(user):
+        student = Students.objects.get(user=user)
+        student_profile = StudentProfile.objects.get(student=student)
+        student_serializer = StudentsSerializer(student)
+        profile_serializer = StudentProfileSerializer(student_profile)
+        if profile_serializer.data['avatar']:
+            return Response({"student": student_serializer.data, "avatar": profile_serializer.data['avatar']})
+        else:
+            return Response({"student": student_serializer.data, "avatar": None})
     else:
-        return Response({"staff": student_serializer.data, "avatar": None})
+        return Response({"You don't have permissions for this action"})

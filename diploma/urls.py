@@ -23,6 +23,7 @@ urlpatterns = [
     path('v1/accounts/', include('accounts.urls')),
     path('v1/students/', include('students.urls')),
     path('v1/staff/', include('staff.urls')),
+    path('v1/calendar/', include('calendare.urls')),
 
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="reset_password.html"),
          name='reset_password'),
