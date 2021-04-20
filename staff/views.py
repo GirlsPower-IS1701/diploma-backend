@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -59,5 +60,20 @@ class StaffProfileApi(generics.GenericAPIView):
             return Response({"msg": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
+@api_view(('GET',))
+@permission_classes([IsAuthenticated, ])
+# @csrf_exempt
+def get_staff_profile(request):
+    user = request.user
+    staff = Staff.objects.get(user=user)
+    staff_profile = StaffProfile.objects.get(staff=staff)
+    staff_serializer = StaffSerializer(staff)
+    profile_serializer = StaffProfileSerializer(staff_profile)
+    if profile_serializer.data['avatar']:
+        return Response({"staff": staff_serializer.data, "avatar": profile_serializer.data['avatar']})
+    else:
+        return Response({"staff": staff_serializer.data, "avatar": None})
 
 

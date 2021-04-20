@@ -6,5 +6,6 @@ from .views import StaffApi
 
 urlpatterns = [
     path('api/staff/', views.StaffApi.as_view(), name='staff_api'),
-    path('api/staff_profile', views.StaffProfileApi.as_view(), name='staff_profile')
+    path('api/staff_profile', views.StaffProfileApi.as_view(), name='staff_profile'),
+    path('api/get_staff_profile', views.get_staff_profile, name='get_profile')
 ]

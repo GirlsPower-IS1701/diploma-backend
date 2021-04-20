@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -31,7 +32,6 @@ class StudentApi(generics.GenericAPIView):
                 course=serializer.validated_data.get("course")
             )
             student.save()
-            student.groups.add(Group.objects.get(name='Admin'))
             response_serializer = self.serializer_class(student)
             return Response(response_serializer.data)
         else:
@@ -65,3 +65,16 @@ class StudentProfileApi(generics.GenericAPIView):
 
 
 
+@api_view(('GET',))
+@permission_classes([IsAuthenticated, ])
+# @csrf_exempt
+def get_student_profile(request):
+    user = request.user
+    student = Students.objects.get(user=user)
+    student_profile = StudentProfile.objects.get(student=student)
+    student_serializer = StudentsSerializer(student)
+    profile_serializer = StudentProfileSerializer(student_profile)
+    if profile_serializer.data['avatar']:
+        return Response({"staff": student_serializer.data, "avatar": profile_serializer.data['avatar']})
+    else:
+        return Response({"staff": student_serializer.data, "avatar": None})

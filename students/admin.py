@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Payment_Form, Degree_Types, Study_Form, Study_Statuses, Students
+from .models import Payment_Form, Degree_Types, Study_Form, Study_Statuses, Students, StudentProfile
 
 
 class PaymentFormAdmin(admin.ModelAdmin):
@@ -21,3 +21,7 @@ admin.site.register(Study_Statuses, StudyStatusAdmin)
 class StudentsAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Students, StudentsAdmin)
+
+class StudentProfileAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(StudentProfile, StudentProfileAdmin)

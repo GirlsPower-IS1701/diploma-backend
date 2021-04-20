@@ -6,5 +6,6 @@ from .views import StudentApi
 
 urlpatterns = [
     path('api/students/', views.StudentApi.as_view(), name='students_api'),
-    path('api/student_profile', views.StudentProfileApi.as_view(), name='student_profile')
+    path('api/student_profile', views.StudentProfileApi.as_view(), name='student_profile'),
+    path('api/get_student_profile', views.get_student_profile)
 ]
