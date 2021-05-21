@@ -36,7 +36,6 @@ class AcademicCalendarApi(generics.GenericAPIView):
         else:
             return Response({"msg": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class EventsApi(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = EventsSerializer

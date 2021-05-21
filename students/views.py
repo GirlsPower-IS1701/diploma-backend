@@ -68,9 +68,6 @@ class StudentProfileApi(generics.GenericAPIView):
         else:
             return Response({"msg": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
 @api_view(('GET',))
 @permission_classes([IsAuthenticated, ])
 def get_student_profile(request):

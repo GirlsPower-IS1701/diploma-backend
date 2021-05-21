@@ -65,12 +65,8 @@ class StaffProfileApi(generics.GenericAPIView):
         else:
             return Response({"msg": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
 @api_view(('GET',))
 @permission_classes([IsAuthenticated, ])
-# @csrf_exempt
 def get_staff_profile(request):
     user = request.user
     if is_staff(user):

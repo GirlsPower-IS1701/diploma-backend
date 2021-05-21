@@ -4,14 +4,9 @@ from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from accounts.utils import is_student
-from accounts.models import User
 from students.models import Students
 from .models import Grades
-from .serializers import GradesSerializer
 
-# Create your views here.
 @api_view(('GET',))
 @permission_classes([IsAuthenticated, ])
 def get_study_plan(request):
@@ -25,3 +20,5 @@ def get_study_plan(request):
         grades.append(study_plan)
 
     return Response(grades)
+
+

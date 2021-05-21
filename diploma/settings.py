@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'speciality_groups',
     'calendare',
     'references',
+    'timetable',
 ]
 
 
