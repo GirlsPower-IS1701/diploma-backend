@@ -34,7 +34,7 @@ SECRET_KEY = 'sqs4#p^eg2%=24u)bwivbx9ij=7jc)rrh2dz3py&$78stgi8b*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.2.2', 'localhost', '127.0.0.1', '192.168.2.20', '46.101.216.205']
+ALLOWED_HOSTS = ['10.0.2.2', 'localhost', '127.0.0.1', '192.168.2.20', '178.62.217.222']
 
 AUTH_USER_MODEL = 'accounts.User'
 
