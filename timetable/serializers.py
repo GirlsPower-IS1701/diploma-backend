@@ -3,7 +3,7 @@ from rest_framework import serializers
 from accounts.serializers import UserSerializer
 from .models import Timetable
 
-from speciality_groups.serializers EnrollmentSerializer
+from speciality_groups.serializers import EnrollmentSerializer
 
 class TimetableSerialaizer(serializers.ModelSerializer):
     enrollment = EnrollmentSerializer(read_only=True)
