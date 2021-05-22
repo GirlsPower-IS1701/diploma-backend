@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('api/references/', views.ReferenceApiView.as_view()),
-    path('api/gethistory/', views.get_reference_history)
+    re_path('api/gethistory/', views.get_reference_history),
 ]
