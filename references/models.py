@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from students.models import Students
 from staff.models import Staff
@@ -18,6 +19,7 @@ class Reference(models.Model):
     reference_type_id = models.ForeignKey(Reference_Type, on_delete=models.CASCADE, verbose_name="reference_type")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="user", null=True)
     reference_file = models.FileField(upload_to='references/', blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name = 'Reference'

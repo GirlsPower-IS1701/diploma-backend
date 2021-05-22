@@ -8,6 +8,9 @@ import pdfkit
 from django.core.mail import EmailMessage
 from rest_framework.response import Response
 from accounts.serializers import UserSerializer
+from rest_framework import generics, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 class ReferenceApiView(APIView):
@@ -30,7 +33,19 @@ class ReferenceApiView(APIView):
         msg.content_subtype = "html"  
         
         msg.attach_file("cv.pdf")
+        reference = Reference(reference_type_id = Reference_Type.objects.get(pk=reference_type), user = request.user, reference_file = "cv.pdf")
+        reference.save()
         msg.send()
         return Response(serializer.data)
 
 
+
+@api_view(('GET',))
+@permission_classes([IsAuthenticated, ])
+def get_reference_history(request):
+    user = request.user
+
+    references = Reference.objects.filter(user=user).order_by('created_at')
+    serializer = ReferenceSerialaizer(references, many=True)
+
+    return Response(serializer.data)
