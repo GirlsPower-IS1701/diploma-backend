@@ -42,7 +42,7 @@ class ReferenceApiView(APIView):
 
 @api_view(('GET',))
 @permission_classes([IsAuthenticated, ])
-def get_reference_history(request):
+def get_student_reference_history(request):
     user = request.user
 
     references = Reference.objects.filter(user=user).order_by('created_at')

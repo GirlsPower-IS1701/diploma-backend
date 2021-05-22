@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from students.models import Students
 from .models import Grades
+from .serializers import GradesSerializer
 
 @api_view(('GET',))
 @permission_classes([IsAuthenticated, ])
@@ -21,4 +22,26 @@ def get_study_plan(request):
 
     return Response(grades)
 
+@api_view(('GET',))
+@permission_classes([IsAuthenticated, ])
+def calculate_gpa(request):
+    credits_count = 0
+    total = 0
+    user = request.user
+    student = Students.objects.get(user=user)
+    list = []
+    data = []
+    for g in Grades.objects.filter(student=student):
+        data.append(GradesSerializer(g).data)
+        enrollment = g.enrollment
+        subject = enrollment.subject
+        credits_count += int(subject.credits_count)
+        total = subject.credits_count * int(g.gpa)
+        list.append(total)
+    total_sum = 0
+    for i in list:
+        total_sum+=i
+
+    res = int(total_sum/credits_count)
+    return Response({"grades": data, "gpa": res})
 

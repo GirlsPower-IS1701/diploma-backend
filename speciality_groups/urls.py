@@ -6,4 +6,5 @@ from .views import get_study_plan
 
 urlpatterns = [
     path('api/study_plan/', views.get_study_plan),
+    path('api/get_gpa/', views.calculate_gpa),
 ]

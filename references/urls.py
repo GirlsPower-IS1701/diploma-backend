@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('api/references/', views.ReferenceApiView.as_view()),
-    re_path('api/gethistory/', views.get_reference_history),
+    path('api/references/gpa', views.get_student_reference_history),
 ]
