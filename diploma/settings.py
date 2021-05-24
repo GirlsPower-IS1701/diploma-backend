@@ -138,9 +138,9 @@ WSGI_APPLICATION = 'diploma.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'campus',
-        'USER': 'campususer',
-        'PASSWORD': 'campuspassword',
+        'NAME': 'campus_mobile',
+        'USER': 'campus',
+        'PASSWORD': 'campus',
         'HOST': 'localhost',
         'PORT': '',
     }
