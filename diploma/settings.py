@@ -59,8 +59,6 @@ INSTALLED_APPS = [
     'calendare',
     'references',
     'timetable',
-    'chat',
-    'channels',
 ]
 
 
@@ -140,7 +138,7 @@ WSGI_APPLICATION = 'diploma.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'campus',
+        'NAME': 'campus_mobile',
         'USER': 'root',
         'PASSWORD': 'qwerty',
         'HOST': 'localhost',
@@ -186,15 +184,7 @@ USE_TZ = True
 
 
 
-ASGI_APPLICATION = 'diploma.asgi.application'
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
