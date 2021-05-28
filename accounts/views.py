@@ -10,6 +10,8 @@ from rest_framework.views import APIView
 from knox.models import AuthToken
 from .models import User
 from .serializers import UserSerializer, RegisterSerializer, ChangePasswordSerializer
+from django.shortcuts import render
+
 
 
 class RegisterAPI(generics.GenericAPIView):
@@ -71,3 +73,7 @@ class LogoutView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
+
+
+def index(request):
+    return render(request, 'index.html')

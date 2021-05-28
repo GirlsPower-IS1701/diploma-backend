@@ -9,6 +9,8 @@ urlpatterns = [
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterAPI.as_view(), name='register'),
     path('api/change-password/', ChangePasswordView.as_view(), name='change-password'),
+    path('api/privacy', views.index),
+
     # path('api/logout/', views.LogoutView.as_view()),
     # path('api/login/', LoginAPI.as_view(), name='login'),
     # path('api/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),

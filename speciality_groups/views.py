@@ -45,3 +45,58 @@ def calculate_gpa(request):
     res = int(total_sum/credits_count)
     return Response({"grades": data, "gpa": res})
 
+
+
+# @api_view(('GET',))
+# @permission_classes([IsAuthenticated, ])
+# def calculate_gpa_example(request):
+#     credits_count = 0
+#     total = 0
+#     user = request.user
+#     student = Students.objects.get(user=user)
+#     list = []
+#     data = []
+#     for g in Grades.objects.filter(student=student):
+        
+#         enrollment = g.enrollment
+#         subject = enrollment.subject
+#         data.append({"subject": subject.title, "pk1": g.pk1, "pk2": g.pk2, "exam": g.exam_grade, "final": g.final_grade, "gpa": g.gpa})
+#         credits_count += int(subject.credits_count)
+#         total = subject.credits_count * int(g.gpa)
+#         list.append(total)
+#     total_sum = 0
+#     for i in list:
+#         total_sum+=i
+
+#     res = int(total_sum/credits_count)
+#     return Response({"grades": data, "gpa": res})
+
+@api_view(('GET',))
+@permission_classes([IsAuthenticated, ])
+def calculate_gpa_example(request):
+    credits_count = 0
+    total = 0
+    user = request.user
+    student = Students.objects.get(user=user)
+    list = []
+    data = []
+    for g in Grades.objects.filter(student=student):
+        
+        enrollment = g.enrollment
+        subject = enrollment.subject
+        data.append({"subject": subject.title, "pk1": g.pk1, "pk2": g.pk2, "exam": g.exam_grade, "final": g.final_grade, "gpa": g.gpa})
+        credits_count += int(subject.credits_count)
+        total = subject.credits_count * int(g.gpa)
+        list.append(total)
+    total_sum = 0
+    for i in list:
+        total_sum+=i
+
+    res = int(total_sum/credits_count)
+    return Response({"grades": data, "gpa": res})
+
+
+
+
+
+
