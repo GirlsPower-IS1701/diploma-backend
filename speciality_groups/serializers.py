@@ -2,7 +2,9 @@ from rest_framework import serializers
 from departments.serializers import DepartmentSerialaizer, SubjectsSerializer
 from staff.serializers import StaffSerializer
 from students.serializers import StudentsSerializer
-from .models import Adviser, Group, Enrollment, Grades
+from .models import Adviser, Group, Enrollment, Grades, StudentGpa
+from accounts.serializers import UserSerializer
+
 
 class AdviserSerialaizer(serializers.ModelSerializer):
     staff = StaffSerializer(read_only=True)
@@ -35,3 +37,12 @@ class GradesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grades
         fields = ('id', 'enrollment', 'student', 'pk1', 'pk2', 'exam_grade', 'final_grade', 'grade_letter', 'gpa')
+
+
+
+class StudentGpaSerialaizer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = StudentGpa
+        fields = ('id', 'user', 'gpa_file', 'created_at')

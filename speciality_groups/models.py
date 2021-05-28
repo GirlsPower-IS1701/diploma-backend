@@ -1,8 +1,10 @@
 from django.db import models
+from django.utils import timezone
 
 from departments.models import Department, Subjects
 from staff.models import Staff
 from students.models import Students
+from accounts.models import User
 
 
 
@@ -73,3 +75,14 @@ class Group_Enrollment(models.Model):
     class Meta:
         verbose_name = 'Group_Enrollment'
         verbose_name_plural = 'Group_Enrollments'
+
+
+
+class StudentGpa(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="user", null=True)
+    gpa_file = models.FileField(upload_to='gpalist/', blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = 'Student_Gpa'
+        verbose_name_plural = 'Students_Gpa'

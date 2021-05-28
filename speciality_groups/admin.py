@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Adviser, Group, Enrollment, Grades, Group_Enrollment
+from .models import Adviser, Group, Enrollment, Grades, Group_Enrollment, StudentGpa
 # Register your models here.
 
 class AdviserAdmin(admin.ModelAdmin):
@@ -21,3 +21,7 @@ admin.site.register(Grades, GradesAdmin)
 class EnrollmentGroupAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Group_Enrollment, EnrollmentGroupAdmin)
+
+class StudentGpaAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(StudentGpa, StudentGpaAdmin)
