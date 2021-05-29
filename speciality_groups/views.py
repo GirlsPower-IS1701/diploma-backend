@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from students.models import Students
 from .models import Grades, StudentGpa, Group_Enrollment
-from .serializers import GradesSerializer
+from .serializers import GradesSerializer, StudentGpaSerialaizer
 import pdfkit
 from django.core.mail import EmailMessage
 from rest_framework.response import Response
@@ -108,4 +108,12 @@ def calculate_gpa_example(request):
 
 
 
+
+@api_view(('GET',))
+@permission_classes([IsAuthenticated, ])
+def get_student_gpa_history(request):
+    user = request.user
+    gpa = StudentGpa.objects.filter(user=user).order_by('-created_at')
+    serializer = StudentGpaSerialaizer(gpa, many=True)
+    return Response(serializer.data)
 
