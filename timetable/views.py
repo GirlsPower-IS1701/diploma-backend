@@ -28,10 +28,10 @@ def get_timetable_by_staff(request):
     user = request.user
     list = []
     staff = request.data.get('staff_id')
-    enrollment = Enrollment.objects.filter(lecturer=staff).first()
-    for t in Timetable.objects.filter(enrollment=enrollment):
-        data = {"day_of_week": t.day_of_week, "lesson_type": t.lesson_type, "subject": t.enrollment.subject.title, "teacher name": t.enrollment.lecturer.user.first_name, "teacher surname": t.enrollment.lecturer.user.last_name, "start_time": t.start_time, "finish_time": t.finish_time, "room_number": t.room_number}
-        list.append(data)
+    for e in Enrollment.objects.filter(lecturer=staff):
+        for t in Timetable.objects.filter(enrollment=e):
+            data = {"day_of_week": t.day_of_week, "lesson_type": t.lesson_type, "subject": t.enrollment.subject.title, "teacher name": t.enrollment.lecturer.user.first_name, "teacher surname": t.enrollment.lecturer.user.last_name, "start_time": t.start_time, "finish_time": t.finish_time, "room_number": t.room_number}
+            list.append(data)
     return Response(list)
 
    
