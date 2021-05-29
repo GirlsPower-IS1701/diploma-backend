@@ -29,7 +29,7 @@ def get_study_plan(request):
             study_plan2 = {'subject': subject, 'pk1': g.pk1, 'pk2': g.pk2, 'final': g.final_grade, 'grade_letter': g.grade_letter, 'gpa': g.gpa}
             grades2.append(study_plan2)
 
-    return Response({"1-semester": grades1, "2-semester": grades2})
+    return Response({"firstsemester": grades1, "secondsemester": grades2})
 
 @api_view(('GET',))
 @permission_classes([IsAuthenticated, ])
@@ -98,6 +98,9 @@ def calculate_gpa_example(request):
     student_gpa = StudentGpa(user = user, gpa_file = "gpa.pdf")
     student_gpa.save()
     msg2.send()
+    
+    response = HttpResponse(content_type='application/pdf')  
+    response['Content-Disposition'] = 'attachment; filename="file.pdf"'  
     return Response({"grades": data, "gpa": res})
 
 
