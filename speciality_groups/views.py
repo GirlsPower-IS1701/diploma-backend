@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from students.models import Students
 from .models import Grades, StudentGpa
-from .serializers import GradesSerializer, StudentGpaSerialaizer
+from .serializers import GradesSerializer
 import pdfkit
 from django.core.mail import EmailMessage
 from rest_framework.response import Response
@@ -14,24 +14,75 @@ from rest_framework.response import Response
 @api_view(('GET',))
 @permission_classes([IsAuthenticated, ])
 def get_study_plan(request):
-    grades = []
+    grades1 = []
+    grades2 = []
     user = request.user
     student = Students.objects.get(user=user)
     for g in Grades.objects.filter(student=student):
         enrollment = g.enrollment
         subject = enrollment.subject.title
         semester = enrollment.semester
-        study_plan = {'subject': subject, 'pk1': g.pk1, 'pk2': g.pk2, 'final': g.final_grade, 'grade_letter': g.grade_letter, 'gpa': g.gpa, 'semester': semester}
-        grades.append(study_plan)
+        if semester == 1:
+            study_plan1 = {'subject': subject, 'pk1': g.pk1, 'pk2': g.pk2, 'final': g.final_grade, 'grade_letter': g.grade_letter, 'gpa': g.gpa}
+            grades1.append(study_plan1)
+        elif semester == 2:
+            study_plan2 = {'subject': subject, 'pk1': g.pk1, 'pk2': g.pk2, 'final': g.final_grade, 'grade_letter': g.grade_letter, 'gpa': g.gpa}
+            grades2.append(study_plan2)
 
-    return Response(grades)
-
-
-
+    return Response({"1-semester": grades1, "2-semester": grades2})
 
 @api_view(('GET',))
 @permission_classes([IsAuthenticated, ])
 def calculate_gpa(request):
+    credits_count = 0
+    total = 0
+    user = request.user
+    student = Students.objects.get(user=user)
+    list = []
+    data = []
+    for g in Grades.objects.filter(student=student):
+        data.append(GradesSerializer(g).data)
+        enrollment = g.enrollment
+        subject = enrollment.subject
+        credits_count += int(subject.credits_count)
+        total = subject.credits_count * int(g.gpa)
+        list.append(total)
+    total_sum = 0
+    for i in list:
+        total_sum+=i
+
+    res = int(total_sum/credits_count)
+    return Response({"grades": data, "gpa": res})
+
+
+
+# @api_view(('GET',))
+# @permission_classes([IsAuthenticated, ])
+# def calculate_gpa_example(request):
+#     credits_count = 0
+#     total = 0
+#     user = request.user
+#     student = Students.objects.get(user=user)
+#     list = []
+#     data = []
+#     for g in Grades.objects.filter(student=student):
+        
+#         enrollment = g.enrollment
+#         subject = enrollment.subject
+#         data.append({"subject": subject.title, "pk1": g.pk1, "pk2": g.pk2, "exam": g.exam_grade, "final": g.final_grade, "gpa": g.gpa})
+#         credits_count += int(subject.credits_count)
+#         total = subject.credits_count * int(g.gpa)
+#         list.append(total)
+#     total_sum = 0
+#     for i in list:
+#         total_sum+=i
+
+#     res = int(total_sum/credits_count)
+#     return Response({"grades": data, "gpa": res})
+
+@api_view(('GET',))
+@permission_classes([IsAuthenticated, ])
+def calculate_gpa_example(request):
     credits_count = 0
     total = 0
     user = request.user
@@ -44,7 +95,7 @@ def calculate_gpa(request):
         subject = enrollment.subject
         data.append({"subject": subject.title, "pk1": g.pk1, "pk2": g.pk2, "exam": g.exam_grade, "final": g.final_grade, "gpa": g.gpa})
         credits_count += int(subject.credits_count)
-        total = subject.credits_count * int(g.gpa)
+        total = int(subject.credits_count * float(g.gpa))
         list.append(total)
     total_sum = 0
     for i in list:
@@ -64,22 +115,10 @@ def calculate_gpa(request):
     msg2 = EmailMessage('Справка', request.user.first_name + ', ', 'aru.elemes23@gmail.com', [request.user.email])
     msg2.content_subtype = "html"  
     msg2.attach_file("gpa.pdf")
-
-    student_gpa = StudentGpa(user = request.user, gpa_file = "gpa.pdf")
+    student_gpa = StudentGpa(user = user, gpa_file = "gpa.pdf")
     student_gpa.save()
-    
     msg2.send()
     return Response({"grades": data, "gpa": res})
-
-
-
-@api_view(('GET',))
-@permission_classes([IsAuthenticated, ])
-def get_student_gpa_history(request):
-    user = request.user
-    references = StudentGpa.objects.filter(user=user).order_by('created_at')
-    serializer = StudentGpaSerialaizer(references, many=True)
-    return Response(serializer.data)
 
 
 

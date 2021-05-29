@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'calendare',
     'references',
     'timetable',
+    'news',
 ]
 
 
