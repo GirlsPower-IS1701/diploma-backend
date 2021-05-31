@@ -8,4 +8,6 @@ urlpatterns = [
     path('api/timetable/filter_by_staff/', views.get_timetable_by_staff),
     path('api/timetable/filter_by_room/', views.get_timetable_by_room),
     path('api/timetable/filter_by_group/', views.get_timetable_by_group),
+    path('api/timetable/list_of_staff/', views.get_list_of_staff),
+    path('api/timetable/list_of_group/', views.get_list_of_group),
 ]

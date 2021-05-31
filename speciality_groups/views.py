@@ -99,8 +99,7 @@ def calculate_gpa_example(request):
     student_gpa.save()
     msg2.send()
     
-    response = HttpResponse(content_type='application/pdf')  
-    response['Content-Disposition'] = 'attachment; filename="file.pdf"'  
+ 
     return Response({"grades": data, "gpa": res})
 
 
