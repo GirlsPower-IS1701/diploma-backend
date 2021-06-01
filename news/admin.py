@@ -4,4 +4,6 @@ from .models import News
 
 class NewsAdmin(admin.ModelAdmin):
     pass
+    list_display = ('title', 'body')
+    search_fields = ['title', 'body']
 admin.site.register(News, NewsAdmin)

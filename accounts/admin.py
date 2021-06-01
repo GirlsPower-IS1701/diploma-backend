@@ -11,4 +11,5 @@ class UserAdmin(admin.ModelAdmin):
     group.short_description = 'Groups'
 
     list_display = ('username', 'email', 'first_name', 'last_name', 'group')
+    search_fields = ['username', 'email']
 admin.site.register(User, UserAdmin)
